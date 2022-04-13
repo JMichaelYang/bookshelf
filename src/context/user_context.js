@@ -28,8 +28,8 @@ const userReducer = (state, action) => {
 };
 
 const UserContext = React.createContext({
-  user: User.None,
-  updateUser: () => {},
+  state: initialState,
+  dispatch: () => {},
 });
 
 export const UserProvider = ({ children }) => {

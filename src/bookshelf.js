@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import UserContext, { UserProvider } from './context/user_context';
+import { UserProvider } from './context/user_context';
 import { Grid } from '@mui/material';
 import Home from './pages/home';
 import Auth from './pages/auth';

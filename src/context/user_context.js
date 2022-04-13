@@ -11,7 +11,31 @@ export const User = Object.freeze({
   Joon: 'Joon',
 });
 
-export default React.createContext({
+const initialState = { user: User.None };
+
+export const LogInAction = (user) => ({ user, type: 'log_in' });
+export const LogOutAction = () => ({ type: 'log_out' });
+
+const userReducer = (state, action) => {
+  switch (action.type) {
+    case 'log_in':
+      return { ...state, user: action.user };
+    case 'log_out':
+      return { ...state, user: User.None };
+    default:
+      return { ...state, user: User.None };
+  }
+};
+
+const UserContext = React.createContext({
   user: User.None,
   updateUser: () => {},
 });
+
+export const UserProvider = ({ children }) => {
+  const [state, dispatch] = React.useReducer(userReducer, initialState);
+
+  return <UserContext.Provider value={[state, dispatch]}>{children}</UserContext.Provider>;
+};
+
+export default UserContext;

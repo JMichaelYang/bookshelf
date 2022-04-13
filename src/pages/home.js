@@ -14,6 +14,8 @@ function Home() {
 
   const search = () => {};
   const logOut = () => dispatch(LogOutAction);
+  const addBook = () => {};
+  const deleteBook = () => {};
 
   const SearchButton = (
     <IconButton onClick={search}>
@@ -22,10 +24,20 @@ function Home() {
   );
 
   return (
-    <Stack spacing={2} alignItems='end'>
-      <Button sx={{ mt: '4vw' }} variant='outlined' onClick={logOut}>
-        Log Out
-      </Button>
+    <Stack spacing={2} sx={{ mt: '4vw' }}>
+      <Stack direction='row' justifyContent={'space-between'} spacing={2}>
+        <Stack direction='row' spacing={2}>
+          <Button variant='outlined' onClick={addBook}>
+            Add Book
+          </Button>
+          <Button variant='outlined' color='error' onClick={deleteBook}>
+            Delete Book
+          </Button>
+        </Stack>
+        <Button variant='outlined' onClick={logOut}>
+          Log Out
+        </Button>
+      </Stack>
       <Paper sx={{ p: '32px' }}>
         <Typography variant='h3' component='h1' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>
           {`Hi ${user}! What would you like to read today?`}
@@ -41,7 +53,7 @@ function Home() {
       <Box sx={{ width: '100%' }}>
         <Paper sx={{ p: '32px' }}>
           <Typography variant='h5' component='h1' align='left' sx={{ mb: '20px' }}>
-            Top Rated Books
+            House Favorites
           </Typography>
           <Stack direction='row' spacing={2}>
             <div>text 1</div>

@@ -4,7 +4,7 @@ import UserContext, { LogInAction, User } from '../context/user_context';
 import { Button, Stack, Typography } from '@mui/material';
 
 function Auth() {
-  const [state, dispatch] = useContext(UserContext);
+  const { state, dispatch } = useContext(UserContext);
   const { user } = state;
 
   if (user !== User.None) {

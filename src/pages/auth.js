@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import UserContext, { LogInAction, User } from '../context/user_context';
 import { Button, Stack, Typography } from '@mui/material';
 
-function Auth() {
+const Auth = () => {
   const { state, dispatch } = useContext(UserContext);
   const { user } = state;
 

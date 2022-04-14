@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { fetchBooks } from '../api/book_api';
 
-const initialState = { 
+const initialState = {
   books: [],
-  filtered: [] 
+  filtered: [],
 };
 
 export const LoadBooksAction = () => (dispatch) => {
   dispatch({ type: 'load_books' });
-  fetchBooks().then(books => dispatch(LoadedBooksAction(books)));
+  fetchBooks().then((books) => dispatch(LoadedBooksAction(books)));
 };
 
 const LoadedBooksAction = (books) => ({ type: 'loaded_books', books });
@@ -19,7 +19,7 @@ const bookReducer = (state, action) => {
   switch (action.type) {
     case 'load_books':
       return { ...state, books: null };
-    case 'loaded_books': 
+    case 'loaded_books':
       return { ...state, books: action.books };
     default:
       return initialState;
@@ -32,7 +32,7 @@ const BookContext = React.createContext({
 });
 
 const wrapDispatch = (dispatch) => (action) => {
-  if(action instanceof Function) {
+  if (action instanceof Function) {
     return action(dispatch);
   }
 

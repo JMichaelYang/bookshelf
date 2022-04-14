@@ -5,10 +5,10 @@ import { Grid } from '@mui/material';
 import Home from './pages/home';
 import Auth from './pages/auth';
 
-function Bookshelf() {
+const Bookshelf = () => {
   return (
     <Grid container justifyContent='center'>
-      <Grid item xs={10} md={8} lg={6}>
+      <Grid item xs={10} md={8}>
         <UserProvider>
           <BookProvider>
             <BrowserRouter>
@@ -22,7 +22,6 @@ function Bookshelf() {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default Bookshelf;
-

@@ -17,7 +17,7 @@ const BookTile = (props) => {
       />
       <CardActions>
         <Box sx={{ px: '8px' }}>
-          <Rating ratingValue={rating * 20} size={width / 8} style={{ marginTop: '4px' }} readonly />
+          <Rating ratingValue={rating * 20} size={width / 10} style={{ marginTop: '4px' }} readonly />
         </Box>
         <IconButton sx={{ ml: 'auto' }} aria-label='go'>
           <ArrowForwardIcon />

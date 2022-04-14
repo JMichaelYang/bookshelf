@@ -11,6 +11,4 @@ const fetchUsersLocal = async () => {
 
 const fetchUsersRemote = async () => [];
 
-export const fetchUsers = async () => {
-  return USE_LOCAL ? await fetchUsersLocal() : await fetchUsersRemote();
-};
+export const fetchUsers = async () => (USE_LOCAL ? await fetchUsersLocal() : await fetchUsersRemote());

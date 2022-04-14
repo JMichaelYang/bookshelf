@@ -11,6 +11,4 @@ const fetchBooksLocal = async () => {
 
 const fetchBooksRemote = async () => [];
 
-export const fetchBooks = async () => {
-  return USE_LOCAL ? await fetchBooksLocal() : await fetchBooksRemote();
-};
+export const fetchBooks = async () => (USE_LOCAL ? await fetchBooksLocal() : await fetchBooksRemote());

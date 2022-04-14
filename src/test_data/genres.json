@@ -1,0 +1,38 @@
+[
+  {
+    "genre_id": 0,
+    "name": "Non-fiction"
+  },
+  {
+    "genre_id": 1,
+    "name": "Popular Science"
+  },
+  {
+    "genre_id": 2,
+    "name": "Science Fiction"
+  },
+  {
+    "genre_id": 3,
+    "name": "Novel"
+  },
+  {
+    "genre_id": 4,
+    "name": "Adventure Fiction"
+  },
+  {
+    "genre_id": 5,
+    "name": "Lost World"
+  },
+  {
+    "genre_id": 6,
+    "name": "Fantasy Fiction"
+  },
+  {
+    "genre_id": 7,
+    "name": "Horror Fiction"
+  },
+  {
+    "genre_id": 8,
+    "name": "Magical Realism"
+  }
+]

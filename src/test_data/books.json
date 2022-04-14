@@ -1,30 +1,30 @@
 [
   {
-    "id": 0,
+    "book_id": 0,
     "title": "Sapiens: A Brief History of Humankind",
     "image": "https://m.media-amazon.com/images/I/51Sn8PEXwcL.jpg",
     "description": "From a renowned historian comes a groundbreaking narrative of humanity's creation and evolution—a #1 international bestseller—that explores the ways in which biology and history have defined us and enhanced our understanding of what it means to be “human.”"
   },
   {
-    "id": 1,
+    "book_id": 1,
     "title": "A Short History of Nearly Everything",
     "image": "https://images-na.ssl-images-amazon.com/images/I/81oEGeRXNtL.jpg",
     "description": "In A Walk in the Woods, Bill Bryson trekked the Appalachian Trail—well, most of it. In A Sunburned Country, he confronted some of the most lethal wildlife Australia has to offer. Now, in his biggest book, he confronts his greatest challenge: to understand—and, if possible, answer—the oldest, biggest questions we have posed about the universe and ourselves. Taking as territory everything from the Big Bang to the rise of civilization, Bryson seeks to understand how we got from there being nothing at all to there being us. To that end, he has attached himself to a host of the world's most advanced (and often obsessed) archaeologists, anthropologists, and mathematicians, travelling to their offices, laboratories, and field camps. He has read (or tried to read) their books, pestered them with questions, apprenticed himself to their powerful minds. A Short History of Nearly Everything is the record of this quest, and it is a sometimes profound, sometimes funny, and always supremely clear and entertaining adventure in the realms of human knowledge, as only Bill Bryson can render it. Science has never been more involving or entertaining."
   },
   {
-    "id": 2,
+    "book_id": 2,
     "title": "Congo",
     "image": "https://images-na.ssl-images-amazon.com/images/I/518vue5IsJL.jpg",
     "description": "Deep in the African rain forest, near the legendary ruins of the Lost City of Zinj, an expedition of eight American geologists are mysteriously and brutally killed in a matter of minutes. Ten thousand miles away, Karen Ross, the Congo Project Supervisor, watches a gruesome video transmission of the aftermath: a camp destroyed, tents crushed and torn, equipment scattered in the mud alongside dead bodies—all motionless except for one moving image—a grainy, dark, man-shaped blur. In San Francisco, primatologist Peter Elliot works with Amy, a gorilla with an extraordinary vocabulary of 620 “signs,” the most ever learned by a primate, and she likes to finger paint. But recently her behavior has been erratic and her drawings match, with stunning accuracy, the brittle pages of a Portuguese print dating back to 1642…a drawing of an ancient lost city. A new expedition—along with Amy—is sent into the Congo, where they enter a secret world, and the only way out may be through a horrifying death.…"
   },
   {
-    "id": 3,
+    "book_id": 3,
     "title": "American Gods",
     "image": "https://images-na.ssl-images-amazon.com/images/I/51Pb-OAREFL.jpg",
     "description": "Locked behind bars for three years, Shadow did his time, quietly waiting for the magic day when he could return to Eagle Point, Indiana. A man no longer scared of what tomorrow might bring, all he wanted was to be with Laura, the wife he deeply loved, and start a new life. But just days before his release, Laura and Shadow's best friend are killed in an accident. With his life in pieces and nothing to keep him tethered, Shadow accepts a job from a beguiling stranger he meets on the way home, an enigmatic man who calls himself Mr. Wednesday. A trickster and a rogue, Wednesday seems to know more about Shadow than Shadow does himself. Life as Wednesday’s bodyguard, driver, and errand boy is far more interesting and dangerous than Shadow ever imagined—it is a job that takes him on a dark and strange road trip and introduces him to a host of eccentric characters whose fates are mysteriously intertwined with his own."
   },
   {
-    "id": 4,
+    "book_id": 4,
     "title": "Kafka on the Shore",
     "image": "https://images-na.ssl-images-amazon.com/images/I/81zvseHim4L.jpg",
     "description": "Here we meet a teenage boy, Kafka Tamura, who is on the run, and Nakata, an aging simpleton who is drawn to Kafka for reasons that he cannot fathom. As their paths converge, acclaimed author Haruki Murakami enfolds readers in a world where cats talk, fish fall from the sky, and spirits slip out of their bodies to make love or commit murder, in what is a truly remarkable journey."

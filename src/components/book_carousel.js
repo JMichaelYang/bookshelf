@@ -18,7 +18,7 @@ export const BookCarousel = (props) => {
       ) : (
         <Stack direction='row' sx={{ width: '100%', overflow: 'auto' }}>
           {books.map((book) => (
-            <BookTile key={`book-${book.id}`} book={book} />
+            <BookTile key={`book-${book.book_id}`} book={book} />
           ))}
         </Stack>
       )}

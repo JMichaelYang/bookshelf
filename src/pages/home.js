@@ -2,9 +2,9 @@ import React, { useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import UserContext, { LogOutAction, User } from '../context/user_context';
 import BookContext, { LoadBooksAction } from '../context/book_context';
-import { Box, Button, CircularProgress, IconButton, Paper, Stack, TextField, Typography } from '@mui/material';
-import BookTile from '../components/book_tile';
+import { Button, IconButton, Paper, Stack, TextField, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { BookCarousel } from '../components/book_carousel';
 
 const ButtonBar = (props) => {
   const { addBook, deleteBook, logOut } = props;
@@ -55,33 +55,20 @@ const Home = () => {
     <Stack spacing={2} sx={{ mt: '4vw' }}>
       <ButtonBar addBook={addBook} deleteBook={deleteBook} logOut={logOut} />
       <Paper sx={{ p: '32px' }}>
-        <Typography variant='h4' component='h1' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>
-          {`Hi ${user}! What would you like to read today?`}
-        </Typography>
-        <TextField
-          id='search-field'
-          autoFocus
-          fullWidth
-          label='Search for a book...'
-          InputProps={{ endAdornment: SearchButton }}
-        />
-      </Paper>
-      <Box sx={{ width: '100%' }}>
-        <Paper sx={{ p: '32px' }}>
-          <Typography variant='h6' component='h1' align='left' sx={{ mb: '20px', fontWeight: 'bold' }}>
-            House Favorites
+        <Stack spacing={2}>
+          <Typography variant='h4' component='h1' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>
+            {`Hi ${user}! What would you like to read today?`}
           </Typography>
-          {books === null ? (
-            <CircularProgress />
-          ) : (
-            <Stack direction='row' sx={{ width: '100%', overflow: 'auto' }}>
-              {books.map((book) => (
-                <BookTile key={`book-${book.id}`} book={book} />
-              ))}
-            </Stack>
-          )}
-        </Paper>
-      </Box>
+          <TextField
+            id='search-field'
+            autoFocus
+            fullWidth
+            label='Search for a book or author...'
+            InputProps={{ endAdornment: SearchButton }}
+          />
+          <BookCarousel books={books} />
+        </Stack>
+      </Paper>
     </Stack>
   );
 };

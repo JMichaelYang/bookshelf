@@ -22,18 +22,13 @@ import { BookCarousel } from '../components/book_carousel';
 
 // A component that displays a set of buttons that allows the user to perform actions.
 const ButtonBar = (props) => {
-  const { addBook, deleteBook, logOut } = props;
+  const { addBook, logOut } = props;
 
   return (
     <Stack direction='row' justifyContent={'space-between'} spacing={2}>
-      <Stack direction='row' spacing={2}>
-        <Button variant='outlined' onClick={addBook}>
-          Add Book
-        </Button>
-        <Button variant='outlined' color='error' onClick={deleteBook}>
-          Delete Book
-        </Button>
-      </Stack>
+      <Button variant='outlined' onClick={addBook}>
+        Add Book
+      </Button>
       <Button variant='outlined' onClick={logOut}>
         Log Out
       </Button>
@@ -133,6 +128,7 @@ const Home = () => {
   const { state: bookState, dispatch: bookDispatch } = useContext(BookContext);
   const { state: genreState, dispatch: genreDispatch } = useContext(GenreContext);
   const { currentUser } = userState;
+  const { name } = currentUser || {};
   const { books } = bookState;
   const { genres: allGenres } = genreState;
 
@@ -148,23 +144,17 @@ const Home = () => {
     return <Navigate to='/login' replace />;
   }
 
-  const { name } = currentUser;
-
   const executeSearch = () => {};
   const addBook = () => {};
-  const deleteBook = () => {};
   const logOut = () => userDispatch(LogOutAction());
 
   const updateSearch = (event) => setSearch(event.target.value);
   const updateRating = (event) => setRating(event.target.value);
-  const updateGenres = (event) => {
-    console.log(event.target.value);
-    setGenres(event.target.value);
-  };
+  const updateGenres = (event) => setGenres(event.target.value);
 
   return (
-    <Stack spacing={2} sx={{ mt: '4vw' }}>
-      <ButtonBar addBook={addBook} deleteBook={deleteBook} logOut={logOut} />
+    <Stack spacing={2} sx={{ my: '2vw' }}>
+      <ButtonBar addBook={addBook} logOut={logOut} />
       <Paper sx={{ p: '32px' }}>
         <Stack spacing={2}>
           <Typography variant='h4' component='h1' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>

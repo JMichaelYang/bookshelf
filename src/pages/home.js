@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import UserContext, { LogOutAction, User } from '../context/user_context';
+import UserContext, { LogOutAction } from '../context/user_context';
 import BookContext, { LoadBooksAction } from '../context/book_context';
 import { Button, IconButton, Paper, Stack, TextField, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -29,16 +29,18 @@ const ButtonBar = (props) => {
 const Home = () => {
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: bookState, dispatch: bookDispatch } = useContext(BookContext);
-  const { user } = userState;
+  const { currentUser } = userState;
   const { books } = bookState;
 
   useEffect(() => {
     bookDispatch(LoadBooksAction());
   }, [bookDispatch]);
 
-  if (user === User.None) {
+  if (currentUser === null) {
     return <Navigate to='/login' replace />;
   }
+
+  const { name } = currentUser;
 
   const search = () => {};
   const addBook = () => {};
@@ -57,7 +59,7 @@ const Home = () => {
       <Paper sx={{ p: '32px' }}>
         <Stack spacing={2}>
           <Typography variant='h4' component='h1' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>
-            {`Hi ${user}! What would you like to read today?`}
+            {`Hi ${name}! What would you like to read today?`}
           </Typography>
           <TextField
             id='search-field'

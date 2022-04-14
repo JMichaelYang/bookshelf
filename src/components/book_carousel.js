@@ -1,4 +1,4 @@
-import { CircularProgress, Stack, Typography } from '@mui/material';
+import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import BookTile from './book_tile';
 
 export const BookCarousel = (props) => {
@@ -12,7 +12,9 @@ export const BookCarousel = (props) => {
         </Typography>
       )}
       {books === null ? (
-        <CircularProgress />
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </Box>
       ) : (
         <Stack direction='row' sx={{ width: '100%', overflow: 'auto' }}>
           {books.map((book) => (

@@ -1,13 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import UserContext, { LogInAction, User } from '../context/user_context';
-import { Button, Stack, Typography } from '@mui/material';
+import UserContext, { LoadUsersAction, LogInAction } from '../context/user_context';
+import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
 
 const Auth = () => {
   const { state, dispatch } = useContext(UserContext);
-  const { user } = state;
+  const { currentUser, users } = state;
 
-  if (user !== User.None) {
+  useEffect(() => {
+    dispatch(LoadUsersAction());
+  }, [dispatch]);
+
+  if (currentUser !== null) {
     return <Navigate to='/' replace />;
   }
 
@@ -16,14 +20,14 @@ const Auth = () => {
 
     return (
       <Button
-        key={`user-${buttonUser}`}
+        key={`user-${buttonUser.name}`}
         variant='contained'
         onClick={onClick}
         fullWidth
         size='large'
         sx={{ height: '80px', fontSize: '1.5em' }}
       >
-        {buttonUser}
+        {buttonUser.name}
       </Button>
     );
   };
@@ -34,13 +38,15 @@ const Auth = () => {
       <Typography variant='h2' component='h1' align='center' sx={{ mt: '4vw', mb: '20px', fontWeight: 'bold' }}>
         Welcome to Bookshelf!
       </Typography>
-      <Stack spacing={2}>
-        {Object.values(User)
-          .splice(1)
-          .map((val) => renderUserButton(val))}
-      </Stack>
+      {!!users ? (
+        <Stack spacing={2}>{users.map((user) => renderUserButton(user))}</Stack>
+      ) : (
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </Box>
+      )}
     </>
   );
-}
+};
 
 export default Auth;

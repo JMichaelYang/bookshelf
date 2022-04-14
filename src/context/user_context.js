@@ -1,30 +1,36 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { fetchUsers } from '../api/user_api';
+import asyncDispatch from './async_dispatch';
 
-// A list of possible users.
-export const User = Object.freeze({
-  None: 'None',
-  Jaewon: 'Jaewon',
-  Duo: 'Duo',
-  Leona: 'Leona',
-  John: 'John',
-  Yvonne: 'Yvonne',
-  Joon: 'Joon',
-});
+export const LoadUsersAction = () => (dispatch) => {
+  dispatch({ type: 'load_users' });
+  fetchUsers().then((users) => dispatch(LoadedUsersAction(users)));
+};
 
-const initialState = { user: User.None };
+const LoadedUsersAction = (users) => ({ type: 'loaded_users', users });
 
 export const LogInAction = (user) => ({ user, type: 'log_in' });
+
 export const LogOutAction = () => ({ type: 'log_out' });
 
 const userReducer = (state, action) => {
   switch (action.type) {
+    case 'load_users':
+      return { ...state, users: null };
+    case 'loaded_users':
+      return { ...state, users: action.users };
     case 'log_in':
-      return { ...state, user: action.user };
+      return { ...state, currentUser: action.user };
     case 'log_out':
-      return { ...state, user: User.None };
+      return { ...state, currentUser: null };
     default:
-      return { ...state, user: User.None };
+      return initialState;
   }
+};
+
+const initialState = {
+  users: [],
+  currentUser: null,
 };
 
 const UserContext = React.createContext({
@@ -34,8 +40,9 @@ const UserContext = React.createContext({
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(userReducer, initialState);
+  const aDispatch = useMemo(() => asyncDispatch(dispatch), [dispatch]);
 
-  return <UserContext.Provider value={{ state, dispatch }}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={{ state, dispatch: aDispatch }}>{children}</UserContext.Provider>;
 };
 
 export default UserContext;

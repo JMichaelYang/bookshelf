@@ -1,10 +1,6 @@
 import React, { useMemo } from 'react';
 import { fetchBooks } from '../api/book_api';
-
-const initialState = {
-  books: [],
-  filtered: [],
-};
+import asyncDispatch from './async_dispatch';
 
 export const LoadBooksAction = () => (dispatch) => {
   dispatch({ type: 'load_books' });
@@ -26,26 +22,21 @@ const bookReducer = (state, action) => {
   }
 };
 
+const initialState = {
+  books: [],
+  filtered: [],
+};
+
 const BookContext = React.createContext({
   state: initialState,
   dispatch: () => {},
 });
 
-const wrapDispatch = (dispatch) => (action) => {
-  if (action instanceof Function) {
-    return action(dispatch);
-  }
-
-  return dispatch(action);
-};
-
 export const BookProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(bookReducer, initialState);
-  const asyncDispatch = useMemo(() => wrapDispatch(dispatch), [dispatch]);
+  const aDispatch = useMemo(() => asyncDispatch(dispatch), [dispatch]);
 
-  console.log(state);
-
-  return <BookContext.Provider value={{ state, dispatch: asyncDispatch }}>{children}</BookContext.Provider>;
+  return <BookContext.Provider value={{ state, dispatch: aDispatch }}>{children}</BookContext.Provider>;
 };
 
 export default BookContext;

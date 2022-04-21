@@ -2,11 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import UserContext, { LogOutAction } from '../context/user_context';
 import BookContext, { LoadBooksAction } from '../context/book_context';
-import GenreContext, { LoadGenresAction } from '../context/genre_context';
 import {
-  Box,
   Button,
-  Chip,
   FormControl,
   IconButton,
   InputLabel,
@@ -19,6 +16,7 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { BookCarousel } from '../components/book_carousel';
+import GenreSelect from '../components/genre_select';
 
 // A component that displays a set of buttons that allows the user to perform actions.
 const ButtonBar = (props) => {
@@ -79,70 +77,21 @@ const RatingSelect = (props) => {
   );
 };
 
-// A component that allows the user to select a set of genres to filter by.
-const GenreSelect = (props) => {
-  const { genres, setGenres } = props;
-  let { options } = props;
-
-  if (options === null) options = [];
-
-  const getGenreById = (id) => options.find((val) => val.genre_id === id);
-
-  const renderSelected = (selected) => (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-      {selected.map((val) => (
-        <Chip key={`genre-${val}`} label={getGenreById(val).name} />
-      ))}
-    </Box>
-  );
-
-  return (
-    <FormControl sx={{ minWidth: '100px' }}>
-      <InputLabel id='genre-select-label'>Genre</InputLabel>
-      <Select
-        SelectDisplayProps={{ style: { paddingTop: 12, paddingBottom: 12, height: 32 } }}
-        labelId='genre-select-label'
-        id='genre-select'
-        value={genres}
-        label='Genres'
-        onChange={setGenres}
-        renderValue={renderSelected}
-        multiple
-        sx={{ p: 0 }}
-      >
-        {options.map((val) => (
-          <MenuItem key={val.genre_id} value={val.genre_id}>
-            {val.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  );
-};
-
 const Home = () => {
   const [search, setSearch] = useState('');
   const [rating, setRating] = useState(0);
   const [genres, setGenres] = useState([]);
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: bookState, dispatch: bookDispatch } = useContext(BookContext);
-  const { state: genreState, dispatch: genreDispatch } = useContext(GenreContext);
   const { currentUser } = userState;
   const { name } = currentUser || {};
   const { books } = bookState;
-  const { genres: allGenres } = genreState;
 
   useEffect(() => {
     bookDispatch(LoadBooksAction());
   }, [bookDispatch]);
 
-  useEffect(() => {
-    genreDispatch(LoadGenresAction());
-  }, [genreDispatch]);
-
-  if (currentUser === null) {
-    return <Navigate to='/login' replace />;
-  }
+  if (currentUser === null) return <Navigate to='/login' replace />;
 
   const executeSearch = () => {};
   const addBook = () => {};
@@ -163,7 +112,7 @@ const Home = () => {
           <SearchBar search={search} setSearch={updateSearch} executeSearch={executeSearch} />
           <Stack spacing={2} direction='row'>
             <RatingSelect rating={rating} setRating={updateRating} />
-            <GenreSelect genres={genres} setGenres={updateGenres} options={allGenres} />
+            <GenreSelect genres={genres} setGenres={updateGenres} />
           </Stack>
           <BookCarousel books={books} />
         </Stack>

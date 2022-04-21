@@ -17,6 +17,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import { BookCarousel } from '../components/book_carousel';
 import GenreSelect from '../components/genre_select';
+import EditBook from '../components/edit_book';
 
 // A component that displays a set of buttons that allows the user to perform actions.
 const ButtonBar = (props) => {
@@ -77,10 +78,13 @@ const RatingSelect = (props) => {
   );
 };
 
+const EMPTY_BOOK = Object.freeze({ title: '', image: '', description: '' });
+
 const Home = () => {
   const [search, setSearch] = useState('');
   const [rating, setRating] = useState(0);
   const [genres, setGenres] = useState([]);
+  const [addOpen, setAddOpen] = useState(false);
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
   const { state: bookState, dispatch: bookDispatch } = useContext(BookContext);
   const { currentUser } = userState;
@@ -94,30 +98,42 @@ const Home = () => {
   if (currentUser === null) return <Navigate to='/login' replace />;
 
   const executeSearch = () => {};
-  const addBook = () => {};
+  const createBook = (book) => console.log(book);
   const logOut = () => userDispatch(LogOutAction());
 
   const updateSearch = (event) => setSearch(event.target.value);
   const updateRating = (event) => setRating(event.target.value);
   const updateGenres = (event) => setGenres(event.target.value);
 
+  const toggleAddBook = () => setAddOpen(!addOpen);
+
   return (
-    <Stack spacing={2} sx={{ my: '2vw' }}>
-      <ButtonBar addBook={addBook} logOut={logOut} />
-      <Paper sx={{ p: '32px' }}>
-        <Stack spacing={2}>
-          <Typography variant='h4' component='h1' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>
-            {`Hi ${name}! What would you like to read today?`}
-          </Typography>
-          <SearchBar search={search} setSearch={updateSearch} executeSearch={executeSearch} />
-          <Stack spacing={2} direction='row'>
-            <RatingSelect rating={rating} setRating={updateRating} />
-            <GenreSelect genres={genres} setGenres={updateGenres} />
+    <>
+      <Stack spacing={2} sx={{ my: '2vw' }}>
+        <ButtonBar addBook={toggleAddBook} logOut={logOut} />
+        <Paper sx={{ p: '32px' }}>
+          <Stack spacing={2}>
+            <Typography variant='h4' component='h1' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>
+              {`Hi ${name}! What would you like to read today?`}
+            </Typography>
+            <SearchBar search={search} setSearch={updateSearch} executeSearch={executeSearch} />
+            <Stack spacing={2} direction='row'>
+              <RatingSelect rating={rating} setRating={updateRating} />
+              <GenreSelect genres={genres} setGenres={updateGenres} />
+            </Stack>
+            <BookCarousel books={books} />
           </Stack>
-          <BookCarousel books={books} />
-        </Stack>
-      </Paper>
-    </Stack>
+        </Paper>
+      </Stack>
+      <EditBook
+        open={addOpen}
+        onSubmit={createBook}
+        onClose={toggleAddBook}
+        book={EMPTY_BOOK}
+        authors={[]}
+        genres={[]}
+      />
+    </>
   );
 };
 

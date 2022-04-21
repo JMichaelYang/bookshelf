@@ -1,15 +1,26 @@
 import React, { useMemo } from 'react';
-import { fetchBooks } from '../api/book_api';
+import { addBook, deleteBook, fetchBooks } from '../api/book_api';
 import asyncDispatch from './async_dispatch';
 
 export const LoadBooksAction = () => (dispatch) => {
   dispatch({ type: 'load_books' });
-  fetchBooks().then((books) => dispatch(LoadedBooksAction(books)));
+  const onFetched = (_error, results, _fields) => dispatch(LoadedBooksAction(results));
+  fetchBooks(onFetched);
 };
 
 const LoadedBooksAction = (books) => ({ type: 'loaded_books', books });
 
-export const FilterBooksAction = () => ({ type: 'filter_books' });
+export const AddBookAction = (book, authors, genres) => (dispatch) => {
+  dispatch({ type: 'create_book' });
+  const onAdd = (_error, _results, _fields) => dispatch(LoadBooksAction());
+  addBook(book, authors, genres, onAdd);
+};
+
+export const DeleteBookAction = (book_id) => (dispatch) => {
+  dispatch({ type: 'delete_book' });
+  const onDelete = (_error, _results, _fields) => dispatch(LoadBooksAction());
+  deleteBook(book_id, onDelete);
+};
 
 const bookReducer = (state, action) => {
   switch (action.type) {
@@ -18,7 +29,7 @@ const bookReducer = (state, action) => {
     case 'loaded_books':
       return { ...state, books: action.books };
     default:
-      return initialState;
+      return state;
   }
 };
 

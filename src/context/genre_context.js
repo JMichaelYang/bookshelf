@@ -16,7 +16,7 @@ const genreReducer = (state, action) => {
     case 'loaded_genres':
       return { ...state, genres: action.genres };
     default:
-      return initialState;
+      return state;
   }
 };
 

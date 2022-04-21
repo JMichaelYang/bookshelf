@@ -31,6 +31,8 @@ const GenreSelect = (props) => {
     ));
   };
 
+  const handleChange = (e) => setGenres(e.target.value);
+
   return (
     <FormControl sx={{ minWidth: '100px' }}>
       <InputLabel id='genre-select-label'>Genre</InputLabel>
@@ -40,7 +42,7 @@ const GenreSelect = (props) => {
         id='genre-select'
         value={genres}
         label='Genres'
-        onChange={setGenres}
+        onChange={handleChange}
         renderValue={renderSelected}
         multiple
         sx={{ p: 0 }}

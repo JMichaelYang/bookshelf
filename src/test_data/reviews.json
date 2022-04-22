@@ -1,0 +1,14 @@
+[
+  {
+    "user_id": 0,
+    "book_id": 0,
+    "rating": 5,
+    "review_text": "An interesting read from cover to cover; this book teaches you a lot of things about the body you live in."
+  },
+  {
+    "user_id": 1,
+    "book_id": 0,
+    "rating": 4,
+    "review_text": "This book was fun but way too long, and where's the fun in that?"
+  }
+]

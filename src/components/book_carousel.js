@@ -1,23 +1,7 @@
-import { Box, Card, CardActions, CardContent, Skeleton, Stack, Typography } from '@mui/material';
-import BookTile from './book_tile';
+import { Stack, Typography } from '@mui/material';
+import BookTile, { TilePlaceholder } from './book_tile';
 
-const TilePlaceholder = (props) => {
-  const { width = 240 } = props;
-
-  return (
-    <Card sx={{ width: `${width}px`, m: '8px', flexShrink: 0 }}>
-      <CardContent>
-        <Skeleton variant='text' width={208} height={56} />
-      </CardContent>
-      <Box sx={{ width: '94%', px: '8px', m: 'auto' }}>
-        <Skeleton variant='rectangular' width={208} height={300} />
-      </Box>
-      <CardActions>
-        <Skeleton variant='text' width={224} height={40} />
-      </CardActions>
-    </Card>
-  );
-};
+const PLACEHOLDER_ARRAY = [...Array(10).keys()];
 
 export const BookCarousel = (props) => {
   const { title, books } = props;
@@ -31,12 +15,9 @@ export const BookCarousel = (props) => {
       )}
       {books === null ? (
         <Stack direction='row' sx={{ width: '100%', overflow: 'auto' }}>
-          <TilePlaceholder />
-          <TilePlaceholder />
-          <TilePlaceholder />
-          <TilePlaceholder />
-          <TilePlaceholder />
-          <TilePlaceholder />
+          {PLACEHOLDER_ARRAY.map((i) => (
+            <TilePlaceholder key={`placeholder-${i}`} />
+          ))}
         </Stack>
       ) : (
         <Stack direction='row' sx={{ width: '100%', overflow: 'auto' }}>

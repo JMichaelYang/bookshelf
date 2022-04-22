@@ -90,7 +90,7 @@ const Book = () => {
                   })
                 )}
               </Stack>
-              <Rating ratingValue={rating * 20} size={20} style={{ marginTop: '4px' }} readonly />
+              <Rating ratingValue={rating * 20} size={25} style={{ marginTop: '4px' }} readonly />
               <Divider sx={{ my: 2 }} />
               <Typography variant='body1' component='div'>
                 {description}

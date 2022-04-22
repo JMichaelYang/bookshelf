@@ -21,7 +21,7 @@ const EditReview = (props) => {
   const [review, setReview] = useState(initialReview);
   const { rating, review_text } = review;
 
-  useEffect(() => setReview(initialReview), [initialReview]);
+  useEffect(() => setReview(initialReview), [open, initialReview]);
 
   const setRating = (rate) => setReview({ ...review, rating: rate / 20 });
   const setReviewText = (e) => setReview({ ...review, review_text: e.target.value });

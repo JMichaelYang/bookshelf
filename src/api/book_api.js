@@ -5,17 +5,9 @@ import localBooks from '../test_data/books.json';
 
 let instance_books = localBooks;
 
-const fetchBooksLocal = async (search, rating, genres, onComplete) => {
+const fetchBooksLocal = async (onComplete) => {
   await new Promise((_) => setTimeout(_, 1000));
-  const filtered = instance_books.filter((book) => {
-    return (
-      (book.title.toLowerCase().includes(search.toLowerCase()) ||
-        book.authors.findIndex((author) => author.toLowerCase().includes(search.toLowerCase())) >= 0) &&
-      book.rating >= rating &&
-      (genres.length === 0 || book.genres.findIndex((genre) => genres.includes(genre)) >= 0)
-    );
-  });
-  onComplete(null, filtered, null);
+  onComplete(null, instance_books, null);
 };
 
 const addBookLocal = async (book, onComplete) => {
@@ -41,7 +33,7 @@ const deleteBookLocal = async (book_id, onComplete) => {
 
 /* ----- REMOTE FUNCTIONS ----- */
 
-const fetchBooksRemote = async (search, rating, genres, onComplete) => {};
+const fetchBooksRemote = async (onComplete) => {};
 
 const addBookRemote = async (book, onComplete) => {};
 

@@ -2,13 +2,15 @@ import React, { useMemo } from 'react';
 import { addBook, deleteBook, editBook, fetchBooks } from '../api/book_api';
 import asyncDispatch from './async_dispatch';
 
-export const LoadBooksAction = (search, rating, genres) => (dispatch) => {
+export const LoadBooksAction = () => (dispatch) => {
   dispatch({ type: 'load_books' });
   const onFetched = (_error, results, _fields) => dispatch(LoadedBooksAction(results));
-  fetchBooks(search, rating, genres, onFetched);
+  fetchBooks(onFetched);
 };
 
 const LoadedBooksAction = (books) => ({ type: 'loaded_books', books });
+
+export const FilterBooksAction = (search, rating, genres) => ({ type: 'filter_books', search, rating, genres });
 
 export const AddBookAction = (book) => (dispatch) => {
   dispatch({ type: 'add_book' });
@@ -34,12 +36,28 @@ const bookReducer = (state, action) => {
       return { ...state, books: null };
     case 'loaded_books':
       return { ...state, books: action.books };
+    case 'filter_books':
+      const { search, rating, genres } = action;
+      const { books } = state;
+
+      if (!books) return { ...state, filtered: null };
+
+      const filtered = books.filter((book) => {
+        return (
+          (book.title.toLowerCase().includes(search.toLowerCase()) ||
+            book.authors.findIndex((author) => author.toLowerCase().includes(search.toLowerCase())) >= 0) &&
+          book.rating >= rating &&
+          (genres.length === 0 || book.genres.findIndex((genre) => genres.includes(genre)) >= 0)
+        );
+      });
+
+      return { ...state, filtered };
     default:
       return state;
   }
 };
 
-const initialState = { books: [] };
+const initialState = { books: [], filtered: [] };
 const BookContext = React.createContext({ state: initialState, dispatch: () => {} });
 
 export const BookProvider = ({ children }) => {

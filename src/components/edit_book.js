@@ -22,7 +22,7 @@ const EditBook = (props) => {
   const [book, setBook] = useState(initialBook);
   const { title, authors, genres, image, description } = book;
 
-  useEffect(() => setBook(initialBook), [initialBook]);
+  useEffect(() => setBook(initialBook), [open, initialBook]);
 
   const setTitle = (e) => setBook({ ...book, title: e.target.value });
   const setAuthors = (authors) => setBook({ ...book, authors });

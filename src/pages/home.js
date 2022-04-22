@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import UserContext, { LogOutAction } from '../context/user_context';
-import BookContext, { AddBookAction, LoadBooksAction } from '../context/book_context';
+import BookContext, { AddBookAction, FilterBooksAction, LoadBooksAction } from '../context/book_context';
 import { FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material';
 import { BookCarousel } from '../components/book_carousel';
 import GenreSelect from '../components/genre_select';
@@ -56,24 +56,28 @@ const Home = () => {
   const { state: bookState, dispatch: bookDispatch } = useContext(BookContext);
   const { currentUser } = userState;
   const { name } = currentUser || {};
-  const { books } = bookState;
+  const { books, filtered } = bookState;
 
   const updateSearch = (event) => setSearch(event.target.value);
   const updateRating = (event) => setRating(event.target.value);
 
   const executeSearch = useMemo(() => {
-    return debounce((s, r, g) => bookDispatch(LoadBooksAction(s, r, g)), 300);
+    return debounce((s, r, g) => bookDispatch(FilterBooksAction(s, r, g)), 300);
+  }, [bookDispatch]);
+
+  useEffect(() => {
+    bookDispatch(LoadBooksAction());
   }, [bookDispatch]);
 
   useEffect(() => {
     executeSearch(search, rating, genres);
-  }, [executeSearch, search, rating, genres]);
+  }, [executeSearch, search, rating, genres, books]);
 
   const openAddBook = () => setAddOpen(true);
   const closeAddBook = () => setAddOpen(false);
   const createBook = (book) => {
     bookDispatch(AddBookAction(book));
-    executeSearch(search, rating, genres);
+    bookDispatch(LoadBooksAction());
   };
 
   const logOut = () => userDispatch(LogOutAction());
@@ -97,7 +101,7 @@ const Home = () => {
               <RatingSelect rating={rating} setRating={updateRating} />
               <GenreSelect genres={genres} setGenres={setGenres} />
             </Stack>
-            <BookCarousel books={books} />
+            <BookCarousel books={filtered} />
           </Stack>
         </Paper>
       </Stack>

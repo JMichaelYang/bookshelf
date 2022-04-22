@@ -32,7 +32,6 @@ const Auth = () => {
     );
   };
 
-  // TODO: Change this to book spines.
   return (
     <>
       <Typography variant='h2' component='h2' align='center' sx={{ mt: '4vw', mb: '20px', fontWeight: 'bold' }}>

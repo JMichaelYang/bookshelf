@@ -1,6 +1,7 @@
 import { Box, Card, CardActions, CardContent, CardMedia, IconButton, Skeleton, Typography } from '@mui/material';
 import { Rating } from 'react-simple-star-rating';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useNavigate } from 'react-router-dom';
 
 export const TilePlaceholder = (props) => {
   const { width = 240 } = props;
@@ -21,9 +22,12 @@ export const TilePlaceholder = (props) => {
 };
 
 const BookTile = (props) => {
+  const navigate = useNavigate();
   const { book, width = 240 } = props;
-  const { title, authors, image, rating } = book;
+  const { book_id, title, authors, image, rating } = book;
   const authorText = authors.join(', ');
+
+  const handleClick = () => navigate(`/book/${book_id}`);
 
   return (
     <Card sx={{ width: `${width}px`, m: '8px', flexShrink: 0 }}>
@@ -56,7 +60,7 @@ const BookTile = (props) => {
         <Box sx={{ px: '8px' }}>
           <Rating ratingValue={rating * 20} size={width / 10} style={{ marginTop: '4px' }} readonly />
         </Box>
-        <IconButton sx={{ ml: 'auto' }} aria-label='go'>
+        <IconButton sx={{ ml: 'auto' }} aria-label='go' onClick={handleClick}>
           <ArrowForwardIcon />
         </IconButton>
       </CardActions>

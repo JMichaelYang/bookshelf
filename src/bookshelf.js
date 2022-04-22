@@ -5,6 +5,7 @@ import { GenreProvider } from './context/genre_context';
 import { Grid } from '@mui/material';
 import Home from './pages/home';
 import Auth from './pages/auth';
+import Book from './pages/book';
 
 const Bookshelf = () => {
   return (
@@ -17,6 +18,7 @@ const Bookshelf = () => {
                 <Routes>
                   <Route path='/' element={<Home />} />
                   <Route path='/login' element={<Auth />} />
+                  <Route path='/book/:bid' element={<Book />} />
                 </Routes>
               </BrowserRouter>
             </GenreProvider>

@@ -15,9 +15,6 @@ const fetchBooksLocal = async (search, rating, genres, onComplete) => {
       (genres.length === 0 || book.genres.findIndex((genre) => genres.includes(genre)) >= 0)
     );
   });
-
-  console.log('Search Complete');
-
   onComplete(null, filtered, null);
 };
 

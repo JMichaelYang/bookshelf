@@ -6,15 +6,15 @@ const ButtonBar = (props) => {
   return (
     <Stack direction='row' justifyContent={'space-between'} spacing={2}>
       <Stack direction='row' justifyContent={'space-between'} spacing={2}>
-        {leftButtons.map((button) => (
-          <Button color={button.color} variant='outlined' onClick={button.action}>
+        {leftButtons.map((button, i) => (
+          <Button key={`left-button-${i}`} color={button.color} variant='outlined' onClick={button.action}>
             {button.text}
           </Button>
         ))}
       </Stack>
       <Stack direction='row' justifyContent={'space-between'} spacing={2}>
-        {rightButtons.map((button) => (
-          <Button color={button.color} variant='outlined' onClick={button.action}>
+        {rightButtons.map((button, i) => (
+          <Button key={`right-button-${i}`} color={button.color} variant='outlined' onClick={button.action}>
             {button.text}
           </Button>
         ))}

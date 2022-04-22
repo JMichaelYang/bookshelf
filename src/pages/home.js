@@ -2,27 +2,12 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import UserContext, { LogOutAction } from '../context/user_context';
 import BookContext, { AddBookAction, LoadBooksAction } from '../context/book_context';
-import { Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material';
 import { BookCarousel } from '../components/book_carousel';
 import GenreSelect from '../components/genre_select';
 import EditBook from '../components/edit_book';
 import debounce from 'lodash.debounce';
-
-// A component that displays a set of buttons that allows the user to perform actions.
-const ButtonBar = (props) => {
-  const { addBook, logOut } = props;
-
-  return (
-    <Stack direction='row' justifyContent={'space-between'} spacing={2}>
-      <Button variant='outlined' onClick={addBook}>
-        Add Book
-      </Button>
-      <Button variant='outlined' onClick={logOut}>
-        Log Out
-      </Button>
-    </Stack>
-  );
-};
+import ButtonBar from '../components/button_bar';
 
 // A component that allows the user to search for a book.
 const SearchBar = (props) => {
@@ -73,29 +58,35 @@ const Home = () => {
   const { name } = currentUser || {};
   const { books } = bookState;
 
+  const updateSearch = (event) => setSearch(event.target.value);
+  const updateRating = (event) => setRating(event.target.value);
+  const openAddBook = () => setAddOpen(true);
+  const closeAddBook = () => setAddOpen(false);
+
   const executeSearch = useMemo(() => {
     return debounce((s, r, g) => bookDispatch(LoadBooksAction(s, r, g)), 300);
   }, [bookDispatch]);
 
   useEffect(() => {
-    !addOpen && executeSearch(search, rating, genres);
-  }, [executeSearch, search, rating, genres, addOpen]);
+    executeSearch(search, rating, genres);
+  }, [executeSearch, search, rating, genres]);
 
-  const createBook = (book) => bookDispatch(AddBookAction(book));
+  const createBook = (book) => {
+    bookDispatch(AddBookAction(book));
+    executeSearch(search, rating, genres);
+  };
+
   const logOut = () => userDispatch(LogOutAction());
 
-  const updateSearch = (event) => setSearch(event.target.value);
-  const updateRating = (event) => setRating(event.target.value);
-
-  const openAddBook = () => setAddOpen(true);
-  const closeAddBook = () => setAddOpen(false);
-
   if (currentUser === null) return <Navigate to='/login' replace />;
+
+  const addButton = { color: 'primary', action: openAddBook, text: 'Add Book' };
+  const logOutButton = { color: 'primary', action: logOut, text: 'Log Out' };
 
   return (
     <>
       <Stack spacing={2} sx={{ my: '2vw' }}>
-        <ButtonBar addBook={openAddBook} logOut={logOut} />
+        <ButtonBar leftButtons={[addButton]} rightButtons={[logOutButton]} />
         <Paper sx={{ p: '32px' }}>
           <Stack spacing={2}>
             <Typography variant='h4' component='h4' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>

@@ -92,8 +92,8 @@ const Home = () => {
   const { books } = bookState;
 
   useEffect(() => {
-    bookDispatch(LoadBooksAction());
-  }, [bookDispatch]);
+    if (!addOpen) bookDispatch(LoadBooksAction(search, rating, genres));
+  }, [bookDispatch, search, rating, genres, addOpen]);
 
   if (currentUser === null) return <Navigate to='/login' replace />;
 

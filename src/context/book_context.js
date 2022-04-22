@@ -2,23 +2,23 @@ import React, { useMemo } from 'react';
 import { addBook, deleteBook, fetchBooks } from '../api/book_api';
 import asyncDispatch from './async_dispatch';
 
-export const LoadBooksAction = () => (dispatch) => {
+export const LoadBooksAction = (search, rating, genres) => (dispatch) => {
   dispatch({ type: 'load_books' });
   const onFetched = (_error, results, _fields) => dispatch(LoadedBooksAction(results));
-  fetchBooks(onFetched);
+  fetchBooks(search, rating, genres, onFetched);
 };
 
 const LoadedBooksAction = (books) => ({ type: 'loaded_books', books });
 
 export const AddBookAction = (book) => (dispatch) => {
-  dispatch({ type: 'create_book' });
-  const onAdd = (_error, _results, _fields) => LoadBooksAction()(dispatch);
+  dispatch({ type: 'add_book' });
+  const onAdd = (_error, _results, _fields) => dispatch({ type: 'added_book' });
   addBook(book, onAdd);
 };
 
 export const DeleteBookAction = (book_id) => (dispatch) => {
   dispatch({ type: 'delete_book' });
-  const onDelete = (_error, _results, _fields) => LoadBooksAction()(dispatch);
+  const onDelete = (_error, _results, _fields) => dispatch({ type: 'deleted_book' });
   deleteBook(book_id, onDelete);
 };
 

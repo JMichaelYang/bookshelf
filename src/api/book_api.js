@@ -5,7 +5,7 @@ import localBooks from '../test_data/books.json';
 
 let instance_books = localBooks;
 
-const fetchBooksLocal = async (onComplete) => {
+const fetchBooksLocal = async (search, rating, genres, onComplete) => {
   await new Promise((_) => setTimeout(_, 1000));
   onComplete(null, [...instance_books], null);
 };
@@ -25,7 +25,7 @@ const deleteBookLocal = async (book_id, onComplete) => {
 
 /* ----- REMOTE FUNCTIONS ----- */
 
-const fetchBooksRemote = async (onComplete) => {};
+const fetchBooksRemote = async (search, rating, genres, onComplete) => {};
 
 const addBookRemote = async (book, onComplete) => {};
 

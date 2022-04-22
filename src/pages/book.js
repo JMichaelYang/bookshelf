@@ -19,27 +19,76 @@ import ButtonBar from '../components/button_bar';
 import BookContext, { EditBookAction, DeleteBookAction, LoadBooksAction } from '../context/book_context';
 import GenreContext, { LoadGenresAction } from '../context/genre_context';
 import EditBook from '../components/edit_book';
+import ReviewContext, { LoadReviewsAction } from '../context/review_context';
+import UserContext from '../context/user_context';
+
+const Reviews = (props) => {
+  const { reviews, users } = props;
+
+  if (!reviews) return <Skeleton variant='text' width='100%' height='100px' />;
+
+  if (reviews.length === 0) {
+    return (
+      <Typography variant='body1' component='div' align='center' sx={{ mt: '10px', fontWeight: 'bold' }}>
+        No reviews found. Be the first one to write one for this book!
+      </Typography>
+    );
+  }
+
+  return (
+    <Stack spacing={2}>
+      {reviews.map((review) => (
+        <ReviewRow key={`review-${review.user_id}`} review={review} users={users} />
+      ))}
+    </Stack>
+  );
+};
+
+const ReviewRow = (props) => {
+  const { review, users } = props;
+  const { user_id, review_text, rating } = review;
+  const user = users.find((u) => u.user_id === user_id);
+
+  return (
+    <Paper sx={{ p: 2 }}>
+      <Stack spacing={0.5}>
+        <Typography variant='h6' component='h6'>
+          {user.name}
+        </Typography>
+        <Rating ratingValue={rating * 20} size={20} style={{ marginTop: '4px' }} readonly />
+        <Typography variant='body1' component='div'>
+          {review_text}
+        </Typography>
+      </Stack>
+    </Paper>
+  );
+};
 
 const Book = () => {
   const navigate = useNavigate();
   const { bid } = useParams();
+  const book_id = parseInt(bid);
+  const { state: userState } = useContext(UserContext);
   const { state: bookState, dispatch: bookDispatch } = useContext(BookContext);
   const { state: genreState, dispatch: genreDispatch } = useContext(GenreContext);
+  const { state: reviewState, dispatch: reviewDispatch } = useContext(ReviewContext);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
+  const { users } = userState;
   const { books } = bookState;
   const { genres: options } = genreState;
+  const { reviews: allReviews } = reviewState;
+  const reviews = allReviews[book_id];
 
-  useEffect(() => {
-    genreDispatch(LoadGenresAction());
-  }, [genreDispatch]);
+  useEffect(() => genreDispatch(LoadGenresAction()), [genreDispatch]);
+  useEffect(() => reviewDispatch(LoadReviewsAction(book_id)), [reviewDispatch, book_id]);
 
   if (!books) return <Skeleton variant='text' width='100%' height={800} />;
-  const book = books.find((b) => b.book_id === parseInt(bid));
+  const book = books.find((b) => b.book_id === book_id);
   if (!book) return <Navigate to='/' replace />;
 
-  const { book_id, title, authors, genres, image, description, rating } = book;
+  const { title, authors, genres, image, description, rating } = book;
   const getGenreById = (id) => options.find((val) => val.genre_id === id);
 
   const handleBack = () => navigate('/');
@@ -81,7 +130,7 @@ const Book = () => {
                 {authorText}
               </Typography>
               <Stack direction='row' sx={{ flexWrap: 'wrap' }}>
-                {!options ? (
+                {!options || !genres ? (
                   <Skeleton variant='text' width='50%' height='40px' />
                 ) : (
                   genres.map((gid) => {
@@ -97,9 +146,10 @@ const Book = () => {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant='h5' component='h5' sx={{ fontWeight: 'bold' }}>
-                Reviews
+              <Typography variant='h5' component='h5' sx={{ fontWeight: 'bold', mb: 2 }}>
+                Roommate Reviews
               </Typography>
+              <Reviews reviews={reviews} users={users} />
             </Grid>
           </Grid>
         </Paper>

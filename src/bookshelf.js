@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { UserProvider } from './context/user_context';
 import { BookProvider } from './context/book_context';
 import { GenreProvider } from './context/genre_context';
+import { ReviewProvider } from './context/review_context';
 import { Grid } from '@mui/material';
 import Home from './pages/home';
 import Auth from './pages/auth';
@@ -13,15 +14,17 @@ const Bookshelf = () => {
       <Grid item xs={10} md={8}>
         <UserProvider>
           <BookProvider>
-            <GenreProvider>
-              <BrowserRouter>
-                <Routes>
-                  <Route path='/' element={<Home />} />
-                  <Route path='/login' element={<Auth />} />
-                  <Route path='/book/:bid' element={<Book />} />
-                </Routes>
-              </BrowserRouter>
-            </GenreProvider>
+            <ReviewProvider>
+              <GenreProvider>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path='/' element={<Home />} />
+                    <Route path='/login' element={<Auth />} />
+                    <Route path='/book/:bid' element={<Book />} />
+                  </Routes>
+                </BrowserRouter>
+              </GenreProvider>
+            </ReviewProvider>
           </BookProvider>
         </UserProvider>
       </Grid>

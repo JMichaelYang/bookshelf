@@ -39,15 +39,8 @@ const bookReducer = (state, action) => {
   }
 };
 
-const initialState = {
-  books: [],
-  filtered: [],
-};
-
-const BookContext = React.createContext({
-  state: initialState,
-  dispatch: () => {},
-});
+const initialState = { books: [] };
+const BookContext = React.createContext({ state: initialState, dispatch: () => {} });
 
 export const BookProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(bookReducer, initialState);

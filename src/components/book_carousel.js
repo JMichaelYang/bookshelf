@@ -5,6 +5,7 @@ const PLACEHOLDER_ARRAY = [...Array(10).keys()];
 
 export const BookCarousel = (props) => {
   const { title, books } = props;
+  books && books.sort((a, b) => b.rating - a.rating);
 
   return (
     <>

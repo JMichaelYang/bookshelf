@@ -1,23 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import UserContext, { LogOutAction } from '../context/user_context';
 import BookContext, { AddBookAction, LoadBooksAction } from '../context/book_context';
-import {
-  Button,
-  FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material';
 import { BookCarousel } from '../components/book_carousel';
 import GenreSelect from '../components/genre_select';
 import EditBook from '../components/edit_book';
+import debounce from 'lodash.debounce';
 
 // A component that displays a set of buttons that allows the user to perform actions.
 const ButtonBar = (props) => {
@@ -37,13 +26,7 @@ const ButtonBar = (props) => {
 
 // A component that allows the user to search for a book.
 const SearchBar = (props) => {
-  const { search, setSearch, executeSearch } = props;
-
-  const SearchButton = (
-    <IconButton onClick={executeSearch}>
-      <SearchIcon />
-    </IconButton>
-  );
+  const { search, setSearch } = props;
 
   return (
     <FormControl>
@@ -54,7 +37,6 @@ const SearchBar = (props) => {
         value={search}
         onChange={setSearch}
         label='Search for a book or author...'
-        InputProps={{ endAdornment: SearchButton }}
       />
     </FormControl>
   );
@@ -91,13 +73,13 @@ const Home = () => {
   const { name } = currentUser || {};
   const { books } = bookState;
 
+  const executeSearch = useMemo(() => {
+    return debounce((s, r, g) => bookDispatch(LoadBooksAction(s, r, g)), 300);
+  }, [bookDispatch]);
+
   useEffect(() => {
-    if (!addOpen) bookDispatch(LoadBooksAction(search, rating, genres));
-  }, [bookDispatch, search, rating, genres, addOpen]);
-
-  if (currentUser === null) return <Navigate to='/login' replace />;
-
-  const executeSearch = () => {};
+    !addOpen && executeSearch(search, rating, genres);
+  }, [executeSearch, search, rating, genres, addOpen]);
 
   const createBook = (book) => bookDispatch(AddBookAction(book));
   const logOut = () => userDispatch(LogOutAction());
@@ -108,6 +90,8 @@ const Home = () => {
   const openAddBook = () => setAddOpen(true);
   const closeAddBook = () => setAddOpen(false);
 
+  if (currentUser === null) return <Navigate to='/login' replace />;
+
   return (
     <>
       <Stack spacing={2} sx={{ my: '2vw' }}>
@@ -117,7 +101,7 @@ const Home = () => {
             <Typography variant='h4' component='h4' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>
               {`Hi ${name}! What would you like to read today?`}
             </Typography>
-            <SearchBar search={search} setSearch={updateSearch} executeSearch={executeSearch} />
+            <SearchBar search={search} setSearch={updateSearch} />
             <Stack spacing={2} direction='row'>
               <RatingSelect rating={rating} setRating={updateRating} />
               <GenreSelect genres={genres} setGenres={setGenres} />

@@ -13,15 +13,12 @@ const fetchReviewsLocal = async (book_id, onComplete) => {
 
 const addReviewLocal = async (review, onComplete) => {
   await new Promise((_) => setTimeout(_, 1000));
-  instance_reviews = [...instance_reviews, review];
-  onComplete(null, onComplete, null);
-};
-
-const editReviewLocal = async (review, onComplete) => {
-  await new Promise((_) => setTimeout(_, 1000));
   instance_reviews = [...instance_reviews];
   const i = instance_reviews.findIndex((r) => r.book_id === review.book_id && r.user_id === review.user_id);
-  instance_reviews[i] = review;
+
+  if (i > -1) instance_reviews[i] = review;
+  else instance_reviews.push(review);
+
   onComplete(null, review, null);
 };
 
@@ -37,11 +34,8 @@ const fetchReviewsRemote = async (book_id, onComplete) => {};
 
 const addReviewRemote = async (review, onComplete) => {};
 
-const editReviewRemote = async (review, onComplete) => {};
-
 const deleteReviewRemote = async (book_id, user_id, onComplete) => {};
 
 export const fetchReviews = USE_LOCAL ? fetchReviewsLocal : fetchReviewsRemote;
 export const addReview = USE_LOCAL ? addReviewLocal : addReviewRemote;
-export const editReview = USE_LOCAL ? editReviewLocal : editReviewRemote;
 export const deleteReview = USE_LOCAL ? deleteReviewLocal : deleteReviewRemote;

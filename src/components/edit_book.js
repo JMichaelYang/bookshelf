@@ -32,11 +32,6 @@ const EditBook = (props) => {
 
   const handleSubmit = () => {
     onSubmit(book);
-    handleClose();
-  };
-
-  const handleClose = () => {
-    setBook(initialBook);
     onClose();
   };
 

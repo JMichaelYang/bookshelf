@@ -19,8 +19,9 @@ import ButtonBar from '../components/button_bar';
 import BookContext, { EditBookAction, DeleteBookAction, LoadBooksAction } from '../context/book_context';
 import GenreContext, { LoadGenresAction } from '../context/genre_context';
 import EditBook from '../components/edit_book';
-import ReviewContext, { LoadReviewsAction } from '../context/review_context';
+import ReviewContext, { AddReviewAction, LoadReviewsAction } from '../context/review_context';
 import UserContext from '../context/user_context';
+import EditReview from '../components/edit_review';
 
 const Reviews = (props) => {
   const { reviews, users } = props;
@@ -73,9 +74,10 @@ const Book = () => {
   const { state: genreState, dispatch: genreDispatch } = useContext(GenreContext);
   const { state: reviewState, dispatch: reviewDispatch } = useContext(ReviewContext);
   const [editOpen, setEditOpen] = useState(false);
+  const [reviewOpen, setReviewOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
-  const { users } = userState;
+  const { currentUser, users } = userState;
   const { books } = bookState;
   const { genres: options } = genreState;
   const { reviews: allReviews } = reviewState;
@@ -87,8 +89,11 @@ const Book = () => {
   if (!books) return <Skeleton variant='text' width='100%' height={800} />;
   const book = books.find((b) => b.book_id === book_id);
   if (!book) return <Navigate to='/' replace />;
-
   const { title, authors, genres, image, description, rating } = book;
+
+  const review = !!reviews && reviews.find((r) => r.book_id === book_id && r.user_id === currentUser.user_id);
+  const initialReview = { user_id: currentUser.user_id, book_id, rating: 0, review_text: '' };
+
   const getGenreById = (id) => options.find((val) => val.genre_id === id);
 
   const handleBack = () => navigate('/');
@@ -98,6 +103,13 @@ const Book = () => {
   const updateBook = (book) => {
     bookDispatch(EditBookAction(book));
     bookDispatch(LoadBooksAction('', 0, []));
+  };
+
+  const openEditReview = () => setReviewOpen(true);
+  const closeEditReview = () => setReviewOpen(false);
+  const updateReview = (review) => {
+    reviewDispatch(AddReviewAction(review));
+    reviewDispatch(LoadReviewsAction(book_id));
   };
 
   const handleDeleteOpen = () => setDeleteConfirmOpen(true);
@@ -146,9 +158,14 @@ const Book = () => {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant='h5' component='h5' sx={{ fontWeight: 'bold', mb: 2 }}>
-                Roommate Reviews
-              </Typography>
+              <Stack direction='row' justifyContent={'space-between'} spacing={2} sx={{ mb: 2 }}>
+                <Typography variant='h5' component='h5' sx={{ fontWeight: 'bold' }}>
+                  Roommate Reviews
+                </Typography>
+                <Button color='primary' variant='outlined' onClick={openEditReview}>
+                  Leave Review
+                </Button>
+              </Stack>
               <Reviews reviews={reviews} users={users} />
             </Grid>
           </Grid>
@@ -166,6 +183,12 @@ const Book = () => {
         </DialogContent>
       </Dialog>
       <EditBook open={editOpen} onSubmit={updateBook} onClose={closeEditBook} book={book} />
+      <EditReview
+        open={reviewOpen}
+        onSubmit={updateReview}
+        onClose={closeEditReview}
+        review={review ? review : initialReview}
+      />
     </>
   );
 };

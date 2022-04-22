@@ -104,7 +104,6 @@ const Home = () => {
 
   const updateSearch = (event) => setSearch(event.target.value);
   const updateRating = (event) => setRating(event.target.value);
-  const updateGenres = (event) => setGenres(event.target.value);
 
   const openAddBook = () => setAddOpen(true);
   const closeAddBook = () => setAddOpen(false);
@@ -121,7 +120,7 @@ const Home = () => {
             <SearchBar search={search} setSearch={updateSearch} executeSearch={executeSearch} />
             <Stack spacing={2} direction='row'>
               <RatingSelect rating={rating} setRating={updateRating} />
-              <GenreSelect genres={genres} setGenres={updateGenres} />
+              <GenreSelect genres={genres} setGenres={setGenres} />
             </Stack>
             <BookCarousel books={books} />
           </Stack>

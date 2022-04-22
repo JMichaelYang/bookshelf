@@ -13,6 +13,11 @@ export const BookCarousel = (props) => {
           {title}
         </Typography>
       )}
+      {books && books.length === 0 && (
+        <Typography variant='body1' component='div' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>
+          No books found. Please try again!
+        </Typography>
+      )}
       {books === null ? (
         <Stack direction='row' sx={{ width: '100%', overflow: 'auto' }}>
           {PLACEHOLDER_ARRAY.map((i) => (

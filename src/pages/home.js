@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import UserContext, { LogOutAction } from '../context/user_context';
-import BookContext, { LoadBooksAction } from '../context/book_context';
+import BookContext, { AddBookAction, LoadBooksAction } from '../context/book_context';
 import {
   Button,
   FormControl,
@@ -78,7 +78,7 @@ const RatingSelect = (props) => {
   );
 };
 
-const EMPTY_BOOK = Object.freeze({ title: '', image: '', description: '' });
+const EMPTY_BOOK = Object.freeze({ title: '', authors: [], genres: [], image: '', description: '' });
 
 const Home = () => {
   const [search, setSearch] = useState('');
@@ -98,22 +98,24 @@ const Home = () => {
   if (currentUser === null) return <Navigate to='/login' replace />;
 
   const executeSearch = () => {};
-  const createBook = (book) => console.log(book);
+
+  const createBook = (book) => bookDispatch(AddBookAction(book));
   const logOut = () => userDispatch(LogOutAction());
 
   const updateSearch = (event) => setSearch(event.target.value);
   const updateRating = (event) => setRating(event.target.value);
   const updateGenres = (event) => setGenres(event.target.value);
 
-  const toggleAddBook = () => setAddOpen(!addOpen);
+  const openAddBook = () => setAddOpen(true);
+  const closeAddBook = () => setAddOpen(false);
 
   return (
     <>
       <Stack spacing={2} sx={{ my: '2vw' }}>
-        <ButtonBar addBook={toggleAddBook} logOut={logOut} />
+        <ButtonBar addBook={openAddBook} logOut={logOut} />
         <Paper sx={{ p: '32px' }}>
           <Stack spacing={2}>
-            <Typography variant='h4' component='h1' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>
+            <Typography variant='h4' component='h4' align='center' sx={{ mb: '20px', fontWeight: 'bold' }}>
               {`Hi ${name}! What would you like to read today?`}
             </Typography>
             <SearchBar search={search} setSearch={updateSearch} executeSearch={executeSearch} />
@@ -125,14 +127,7 @@ const Home = () => {
           </Stack>
         </Paper>
       </Stack>
-      <EditBook
-        open={addOpen}
-        onSubmit={createBook}
-        onClose={toggleAddBook}
-        book={EMPTY_BOOK}
-        authors={[]}
-        genres={[]}
-      />
+      <EditBook open={addOpen} onSubmit={createBook} onClose={closeAddBook} book={EMPTY_BOOK} />
     </>
   );
 };

@@ -10,15 +10,15 @@ export const LoadBooksAction = () => (dispatch) => {
 
 const LoadedBooksAction = (books) => ({ type: 'loaded_books', books });
 
-export const AddBookAction = (book, authors, genres) => (dispatch) => {
+export const AddBookAction = (book) => (dispatch) => {
   dispatch({ type: 'create_book' });
-  const onAdd = (_error, _results, _fields) => dispatch(LoadBooksAction());
-  addBook(book, authors, genres, onAdd);
+  const onAdd = (_error, _results, _fields) => LoadBooksAction()(dispatch);
+  addBook(book, onAdd);
 };
 
 export const DeleteBookAction = (book_id) => (dispatch) => {
   dispatch({ type: 'delete_book' });
-  const onDelete = (_error, _results, _fields) => dispatch(LoadBooksAction());
+  const onDelete = (_error, _results, _fields) => LoadBooksAction()(dispatch);
   deleteBook(book_id, onDelete);
 };
 

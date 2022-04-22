@@ -18,33 +18,25 @@ const BOX_STYLE = Object.freeze({
 });
 
 const EditBook = (props) => {
-  const { open, onSubmit, onClose, book: initialBook, authors: initialAuthors, genres: initialGenres } = props;
+  const { open, onSubmit, onClose, book: initialBook } = props;
   const [book, setBook] = useState(initialBook);
-  const [authors, setAuthors] = useState(initialAuthors);
-  const [genres, setGenres] = useState(initialGenres);
-  const { title, image, description } = book;
+  const { title, authors, genres, image, description } = book;
 
   useEffect(() => setBook(initialBook), [initialBook]);
-  useEffect(() => setAuthors(initialAuthors), [initialAuthors]);
-  useEffect(() => setGenres(initialGenres), [initialGenres]);
 
   const setTitle = (e) => setBook({ ...book, title: e.target.value });
+  const setAuthors = (authors) => setBook({ ...book, authors });
+  const setGenres = (genres) => setBook({ ...book, genres });
   const setImage = (e) => setBook({ ...book, image: e.target.value });
   const setDescription = (e) => setBook({ ...book, description: e.target.value });
 
-  const resetState = () => {
-    setBook(initialBook);
-    setAuthors(initialAuthors);
-    setGenres(initialGenres);
-  };
-
   const handleSubmit = () => {
-    onSubmit({ book, authors, genres });
+    onSubmit(book);
     handleClose();
   };
 
   const handleClose = () => {
-    resetState();
+    setBook(initialBook);
     onClose();
   };
 

@@ -1,7 +1,7 @@
+import { USE_LOCAL } from './constants';
 import localUsers from '../test_data/users.json';
 
-// Local development flag.
-const USE_LOCAL = true;
+/* ----- LOCAL FUNCTIONS ----- */
 
 const fetchUsersLocal = async () => {
   // Delay 1 second for testing purposes.
@@ -9,6 +9,8 @@ const fetchUsersLocal = async () => {
   return localUsers;
 };
 
+/* ----- REMOTE FUNCTIONS ----- */
+
 const fetchUsersRemote = async () => [];
 
-export const fetchUsers = async () => (USE_LOCAL ? await fetchUsersLocal() : await fetchUsersRemote());
+export const fetchUsers = USE_LOCAL ? fetchUsersLocal : fetchUsersRemote;

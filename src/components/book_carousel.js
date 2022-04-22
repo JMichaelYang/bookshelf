@@ -7,7 +7,7 @@ export const BookCarousel = (props) => {
   return (
     <>
       {!!title && (
-        <Typography variant='h6' component='h1' align='left' sx={{ mb: '20px', fontWeight: 'bold' }}>
+        <Typography variant='h6' component='h6' align='left' sx={{ mb: '20px', fontWeight: 'bold' }}>
           {title}
         </Typography>
       )}

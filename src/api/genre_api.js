@@ -1,7 +1,7 @@
+import { USE_LOCAL } from './constants';
 import localGenres from '../test_data/genres.json';
 
-// Local development flag.
-const USE_LOCAL = true;
+/* ----- LOCAL FUNCTIONS ----- */
 
 const fetchGenresLocal = async () => {
   // Delay 1 second for testing purposes.
@@ -9,6 +9,8 @@ const fetchGenresLocal = async () => {
   return localGenres;
 };
 
+/* ----- REMOTE FUNCTIONS ----- */
+
 const fetchGenresRemote = async () => [];
 
-export const fetchGenres = () => (USE_LOCAL ? fetchGenresLocal() : fetchGenresRemote());
+export const fetchGenres = USE_LOCAL ? fetchGenresLocal : fetchGenresRemote;

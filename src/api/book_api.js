@@ -7,10 +7,10 @@ let instance_books = localBooks;
 
 const fetchBooksLocal = async (onComplete) => {
   await new Promise((_) => setTimeout(_, 1000));
-  onComplete(null, instance_books, null);
+  onComplete(null, [...instance_books], null);
 };
 
-const addBookLocal = async (book, _authors, _genres, onComplete) => {
+const addBookLocal = async (book, onComplete) => {
   await new Promise((_) => setTimeout(_, 1000));
   const newBook = { ...book, rating: 0, book_id: instance_books.length };
   instance_books = [...instance_books, newBook];
@@ -27,7 +27,7 @@ const deleteBookLocal = async (book_id, onComplete) => {
 
 const fetchBooksRemote = async (onComplete) => {};
 
-const addBookRemote = async (book, authors, genres, onComplete) => {};
+const addBookRemote = async (book, onComplete) => {};
 
 const deleteBookRemote = async (bookd_id, onComplete) => {};
 

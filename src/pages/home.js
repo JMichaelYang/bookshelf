@@ -60,8 +60,6 @@ const Home = () => {
 
   const updateSearch = (event) => setSearch(event.target.value);
   const updateRating = (event) => setRating(event.target.value);
-  const openAddBook = () => setAddOpen(true);
-  const closeAddBook = () => setAddOpen(false);
 
   const executeSearch = useMemo(() => {
     return debounce((s, r, g) => bookDispatch(LoadBooksAction(s, r, g)), 300);
@@ -71,6 +69,8 @@ const Home = () => {
     executeSearch(search, rating, genres);
   }, [executeSearch, search, rating, genres]);
 
+  const openAddBook = () => setAddOpen(true);
+  const closeAddBook = () => setAddOpen(false);
   const createBook = (book) => {
     bookDispatch(AddBookAction(book));
     executeSearch(search, rating, genres);

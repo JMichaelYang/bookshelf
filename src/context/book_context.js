@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { addBook, deleteBook, fetchBooks } from '../api/book_api';
+import { addBook, deleteBook, editBook, fetchBooks } from '../api/book_api';
 import asyncDispatch from './async_dispatch';
 
 export const LoadBooksAction = (search, rating, genres) => (dispatch) => {
@@ -14,6 +14,12 @@ export const AddBookAction = (book) => (dispatch) => {
   dispatch({ type: 'add_book' });
   const onAdd = (_error, _results, _fields) => dispatch({ type: 'added_book' });
   addBook(book, onAdd);
+};
+
+export const EditBookAction = (book) => (dispatch) => {
+  dispatch({ type: 'edit_book' });
+  const onEdit = (_error, _results, _fields) => dispatch({ type: 'edited_book' });
+  editBook(book, onEdit);
 };
 
 export const DeleteBookAction = (book_id) => (dispatch) => {

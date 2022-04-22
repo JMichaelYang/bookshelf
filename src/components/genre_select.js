@@ -1,17 +1,17 @@
 import { useContext, useEffect } from 'react';
-import { Box, Chip, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, Chip, FormControl, InputLabel, MenuItem, Select, Skeleton } from '@mui/material';
 import GenreContext, { LoadGenresAction } from '../context/genre_context';
 
 const GenreSelect = (props) => {
   const { genres, setGenres } = props;
   const { state: genreState, dispatch: genreDispatch } = useContext(GenreContext);
-  let { genres: options } = genreState;
+  const { genres: options } = genreState;
 
   useEffect(() => {
     genreDispatch(LoadGenresAction());
   }, [genreDispatch]);
 
-  if (options === null) options = [];
+  if (options === null) return <Skeleton variant='text' width={100} height={56} />;
 
   const getGenreById = (id) => options.find((val) => val.genre_id === id);
 

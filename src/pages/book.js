@@ -10,35 +10,46 @@ import {
   Typography,
   Divider,
   Chip,
+  Skeleton,
 } from '@mui/material';
 import { Rating } from 'react-simple-star-rating';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import ButtonBar from '../components/button_bar';
-import BookContext, { DeleteBookAction } from '../context/book_context';
+import BookContext, { EditBookAction, DeleteBookAction, LoadBooksAction } from '../context/book_context';
 import GenreContext, { LoadGenresAction } from '../context/genre_context';
+import EditBook from '../components/edit_book';
 
 const Book = () => {
   const navigate = useNavigate();
   const { bid } = useParams();
   const { state: bookState, dispatch: bookDispatch } = useContext(BookContext);
   const { state: genreState, dispatch: genreDispatch } = useContext(GenreContext);
+  const [editOpen, setEditOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
   const { books } = bookState;
-  let { genres: options } = genreState;
-  if (options === null) options = [];
-  const book = books && books.find((b) => b.book_id === parseInt(bid));
+  const { genres: options } = genreState;
 
   useEffect(() => {
     genreDispatch(LoadGenresAction());
   }, [genreDispatch]);
 
+  if (!books) return <Skeleton variant='text' width='100%' height={800} />;
+  const book = books.find((b) => b.book_id === parseInt(bid));
   if (!book) return <Navigate to='/' replace />;
 
   const { book_id, title, authors, genres, image, description, rating } = book;
   const getGenreById = (id) => options.find((val) => val.genre_id === id);
 
   const handleBack = () => navigate('/');
+
+  const openEditBook = () => setEditOpen(true);
+  const closeEditBook = () => setEditOpen(false);
+  const updateBook = (book) => {
+    bookDispatch(EditBookAction(book));
+    bookDispatch(LoadBooksAction('', 0, []));
+  };
 
   const handleDeleteOpen = () => setDeleteConfirmOpen(true);
   const handleDeleteClose = () => setDeleteConfirmOpen(false);
@@ -48,7 +59,7 @@ const Book = () => {
   };
 
   const backButton = { color: 'primary', action: handleBack, text: 'Back' };
-  const editButton = { color: 'primary', action: () => {}, text: 'Edit' };
+  const editButton = { color: 'primary', action: openEditBook, text: 'Edit' };
   const deleteButton = { color: 'error', action: handleDeleteOpen, text: 'Delete' };
 
   const authorText = authors.join(', ');
@@ -70,11 +81,14 @@ const Book = () => {
                 {authorText}
               </Typography>
               <Stack direction='row' sx={{ flexWrap: 'wrap' }}>
-                {!!options.length &&
+                {!options ? (
+                  <Skeleton variant='text' width='50%' height='40px' />
+                ) : (
                   genres.map((gid) => {
                     const genre = getGenreById(gid);
-                    return <Chip label={genre.name} sx={{ my: 0.5, mr: 1 }} />;
-                  })}
+                    return <Chip key={`genre-${gid}`} label={genre.name} sx={{ my: 0.5, mr: 1 }} />;
+                  })
+                )}
               </Stack>
               <Rating ratingValue={rating * 20} size={20} style={{ marginTop: '4px' }} readonly />
               <Divider sx={{ my: 2 }} />
@@ -101,6 +115,7 @@ const Book = () => {
           </DialogActions>
         </DialogContent>
       </Dialog>
+      <EditBook open={editOpen} onSubmit={updateBook} onClose={closeEditBook} book={book} />
     </>
   );
 };

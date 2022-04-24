@@ -1,3 +1,3 @@
-const USE_LOCAL = true;
+const USE_LOCAL = false;
 
 export { USE_LOCAL };

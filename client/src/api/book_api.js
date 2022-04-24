@@ -39,7 +39,7 @@ const fetchBooksRemote = async (onComplete) => {
     headers: { 'Content-Type': 'application/json' },
   };
 
-  const response = await fetch('/books', requestOptions);
+  const response = await fetch('/api/books', requestOptions);
   const body = await response.json();
 
   if (response.status !== 200) onComplete(body.message, null, null);
@@ -54,7 +54,7 @@ const addBookRemote = async (book, onComplete) => {
     body: JSON.stringify(book),
   };
 
-  const response = await fetch('/books', requestOptions);
+  const response = await fetch('/api/books', requestOptions);
   const body = await response.json();
 
   if (response.status !== 200) onComplete(body.message, null, null);
@@ -71,7 +71,7 @@ const editBookRemote = async (book, onComplete) => {
     body: JSON.stringify(book),
   };
 
-  const response = await fetch(`/books/${book_id}`, requestOptions);
+  const response = await fetch(`/api/books/${book_id}`, requestOptions);
   const body = await response.json();
 
   if (response.status !== 200) onComplete(body.message, null, null);
@@ -85,7 +85,7 @@ const deleteBookRemote = async (book_id, onComplete) => {
     headers: { 'Content-Type': 'application/json' },
   };
 
-  const response = await fetch(`/books/${book_id}`, requestOptions);
+  const response = await fetch(`/api/books/${book_id}`, requestOptions);
   const body = await response.json();
 
   if (response.status !== 200) onComplete(body.message, null, null);

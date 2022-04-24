@@ -17,7 +17,7 @@ const fetchUsersRemote = async (onComplete) => {
     headers: { 'Content-Type': 'application/json' },
   };
 
-  const response = await fetch('/users', requestOptions);
+  const response = await fetch('/api/users', requestOptions);
   const body = await response.json();
 
   if (response.status !== 200) onComplete(body.message, null, null);

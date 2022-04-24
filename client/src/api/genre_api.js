@@ -17,7 +17,7 @@ const fetchGenresRemote = async (onComplete) => {
     headers: { 'Content-Type': 'application/json' },
   };
 
-  const response = await fetch('/genres', requestOptions);
+  const response = await fetch('/api/genres', requestOptions);
   const body = await response.json();
 
   if (response.status !== 200) onComplete(body.message, null, null);

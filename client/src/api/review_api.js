@@ -36,7 +36,7 @@ const fetchReviewsRemote = async (book_id, onComplete) => {
     headers: { 'Content-Type': 'application/json' },
   };
 
-  const response = await fetch(`/reviews/${book_id}`, requestOptions);
+  const response = await fetch(`/api/reviews/${book_id}`, requestOptions);
   const body = await response.json();
 
   if (response.status !== 200) onComplete(body.message, null, null);
@@ -53,7 +53,7 @@ const addReviewRemote = async (review, onComplete) => {
     body: JSON.stringify(review),
   };
 
-  const response = await fetch(`/reviews/${book_id}`, requestOptions);
+  const response = await fetch(`/api/reviews/${book_id}`, requestOptions);
   const body = await response.json();
 
   if (response.status !== 200) onComplete(body.message, null, null);
@@ -68,7 +68,7 @@ const deleteReviewRemote = async (book_id, user_id, onComplete) => {
     body: JSON.stringify({ user_id }),
   };
 
-  const response = await fetch(`/reviews/${book_id}`, requestOptions);
+  const response = await fetch(`/api/reviews/${book_id}`, requestOptions);
   const body = await response.json();
 
   if (response.status !== 200) onComplete(body.message, null, null);

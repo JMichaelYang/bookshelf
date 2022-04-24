@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const express = require('express');
+const path = require('path');
 
 const USE_LOCAL = false;
 const host = USE_LOCAL ? 'localhost' : 'bv2rebwf6zzsv341.cbetxkdyhwsb.us-east-1.rds.amazonaws.com';
@@ -12,14 +13,12 @@ const connection = mysql.createConnection({ host, user, password, database });
 connection.connect();
 
 const app = express();
-const port = process.env.PORT || 4000;
-
 app.use(express.json());
-app.listen(port, () => console.log(`Server listening on PORT ${port}`));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 /* ----- Book Routes ----- */
 
-app.get('/books', (_req, res, next) => {
+app.get('/api/books', (_req, res, next) => {
   const sql = 'call fetch_books();';
   connection.query(sql, (error, results, _fields) => {
     if (error) next(error);
@@ -34,7 +33,7 @@ app.get('/books', (_req, res, next) => {
   });
 });
 
-app.post('/books', (req, res, next) => {
+app.post('/api/books', (req, res, next) => {
   const book = req.body;
   const { title, image, description, authors, genres } = book;
 
@@ -49,7 +48,7 @@ app.post('/books', (req, res, next) => {
   );
 });
 
-app.post('/books/:book_id', (req, res, next) => {
+app.post('/api/books/:book_id', (req, res, next) => {
   const book = req.body;
   const id = req.params.book_id;
   const { title, image, description, authors, genres } = book;
@@ -65,7 +64,7 @@ app.post('/books/:book_id', (req, res, next) => {
   );
 });
 
-app.delete('/books/:book_id', (req, res, next) => {
+app.delete('/api/books/:book_id', (req, res, next) => {
   const id = req.params.book_id;
 
   const sql = 'call delete_book(?);';
@@ -77,7 +76,7 @@ app.delete('/books/:book_id', (req, res, next) => {
 
 /* ----- User Routes ----- */
 
-app.get('/users', (_req, res, next) => {
+app.get('/api/users', (_req, res, next) => {
   const sql = 'call fetch_users();';
   connection.query(sql, (error, results, _fields) => {
     if (error) next(error);
@@ -89,7 +88,7 @@ app.get('/users', (_req, res, next) => {
 
 /* ----- Genre Routes ----- */
 
-app.get('/genres', (_req, res, next) => {
+app.get('/api/genres', (_req, res, next) => {
   const sql = 'call fetch_genres();';
   connection.query(sql, (error, results, _fields) => {
     if (error) next(error);
@@ -101,7 +100,7 @@ app.get('/genres', (_req, res, next) => {
 
 /* ----- Review Routes ----- */
 
-app.get('/reviews/:book_id', (req, res, next) => {
+app.get('/api/reviews/:book_id', (req, res, next) => {
   const id = req.params.book_id;
 
   const sql = 'call fetch_reviews(?);';
@@ -113,7 +112,7 @@ app.get('/reviews/:book_id', (req, res, next) => {
   });
 });
 
-app.post('/reviews/:book_id', (req, res, next) => {
+app.post('/api/reviews/:book_id', (req, res, next) => {
   const review = req.body;
   const id = req.params.book_id;
   const { user_id, rating, review_text } = review;
@@ -125,7 +124,7 @@ app.post('/reviews/:book_id', (req, res, next) => {
   });
 });
 
-app.delete('/reviews/:book_id', (req, res, next) => {
+app.delete('/api/reviews/:book_id', (req, res, next) => {
   const id = req.params.book_id;
   const { user_id } = req.body;
 
@@ -135,3 +134,10 @@ app.delete('/reviews/:book_id', (req, res, next) => {
     res.send();
   });
 });
+
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build/index.html'));
+});
+
+const port = process.env.PORT || 4000;
+app.listen(port);

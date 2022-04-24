@@ -30,11 +30,51 @@ const deleteReviewLocal = async (book_id, user_id, onComplete) => {
 
 /* ----- REMOTE FUNCTIONS ----- */
 
-const fetchReviewsRemote = async (book_id, onComplete) => {};
+const fetchReviewsRemote = async (book_id, onComplete) => {
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  };
 
-const addReviewRemote = async (review, onComplete) => {};
+  const response = await fetch(`/reviews/${book_id}`, requestOptions);
+  const body = await response.json();
 
-const deleteReviewRemote = async (book_id, user_id, onComplete) => {};
+  if (response.status !== 200) onComplete(body.message, null, null);
+
+  onComplete(null, body, null);
+};
+
+const addReviewRemote = async (review, onComplete) => {
+  const { book_id } = review;
+
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(review),
+  };
+
+  const response = await fetch(`/reviews/${book_id}`, requestOptions);
+  const body = await response.json();
+
+  if (response.status !== 200) onComplete(body.message, null, null);
+
+  onComplete(null, null, null);
+};
+
+const deleteReviewRemote = async (book_id, user_id, onComplete) => {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id }),
+  };
+
+  const response = await fetch(`/reviews/${book_id}`, requestOptions);
+  const body = await response.json();
+
+  if (response.status !== 200) onComplete(body.message, null, null);
+
+  onComplete(null, null, null);
+};
 
 export const fetchReviews = USE_LOCAL ? fetchReviewsLocal : fetchReviewsRemote;
 export const addReview = USE_LOCAL ? addReviewLocal : addReviewRemote;

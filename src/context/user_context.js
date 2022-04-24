@@ -4,7 +4,8 @@ import asyncDispatch from './async_dispatch';
 
 export const LoadUsersAction = () => (dispatch) => {
   dispatch({ type: 'load_users' });
-  fetchUsers().then((users) => dispatch(LoadedUsersAction(users)));
+  const onFetched = (_error, results, _fields) => dispatch(LoadedUsersAction(results));
+  fetchUsers(onFetched);
 };
 
 const LoadedUsersAction = (users) => ({ type: 'loaded_users', users });

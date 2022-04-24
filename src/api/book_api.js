@@ -33,13 +33,65 @@ const deleteBookLocal = async (book_id, onComplete) => {
 
 /* ----- REMOTE FUNCTIONS ----- */
 
-const fetchBooksRemote = async (onComplete) => {};
+const fetchBooksRemote = async (onComplete) => {
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  };
 
-const addBookRemote = async (book, onComplete) => {};
+  const response = await fetch('/books', requestOptions);
+  const body = await response.json();
 
-const editBookRemote = async (book, onComplete) => {};
+  if (response.status !== 200) onComplete(body.message, null, null);
 
-const deleteBookRemote = async (bookd_id, onComplete) => {};
+  onComplete(null, body, null);
+};
+
+const addBookRemote = async (book, onComplete) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(book),
+  };
+
+  const response = await fetch('/books', requestOptions);
+  const body = await response.json();
+
+  if (response.status !== 200) onComplete(body.message, null, null);
+
+  onComplete(null, null, null);
+};
+
+const editBookRemote = async (book, onComplete) => {
+  const { book_id } = book;
+
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(book),
+  };
+
+  const response = await fetch(`/books/${book_id}`, requestOptions);
+  const body = await response.json();
+
+  if (response.status !== 200) onComplete(body.message, null, null);
+
+  onComplete(null, null, null);
+};
+
+const deleteBookRemote = async (book_id, onComplete) => {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  };
+
+  const response = await fetch(`/books/${book_id}`, requestOptions);
+  const body = await response.json();
+
+  if (response.status !== 200) onComplete(body.message, null, null);
+
+  onComplete(null, null, null);
+};
 
 export const fetchBooks = USE_LOCAL ? fetchBooksLocal : fetchBooksRemote;
 export const addBook = USE_LOCAL ? addBookLocal : addBookRemote;

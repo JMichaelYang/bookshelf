@@ -4,7 +4,8 @@ import asyncDispatch from './async_dispatch';
 
 export const LoadGenresAction = () => (dispatch) => {
   dispatch({ type: 'load_genres' });
-  fetchGenres().then((genres) => dispatch(LoadedGenresAction(genres)));
+  const onFetched = (_error, results, _fields) => dispatch(LoadedGenresAction(results));
+  fetchGenres(onFetched);
 };
 
 const LoadedGenresAction = (genres) => ({ type: 'loaded_genres', genres });

@@ -5,5 +5,6 @@ This repository contains the code for Jaewon Yang's CS 3200 final project (Sprin
 ## Technology
 - React
 - MUI (Component Library)
+- Express
 - MySQL
 - Heroku
